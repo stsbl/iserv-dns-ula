@@ -1,0 +1,21 @@
+MkDir 0755 root:root /var/lib/iserv/dns-ula
+Touch /var/lib/iserv/dns-ula/interface
+
+Test "select interface for fd00::53"
+  [ -s "/var/lib/iserv/dns-ula/interface" ] &&
+      netquery6 nic | grep -q '^'"$(< /var/lib/iserv/dns-ula/interface)"'$'
+  ---
+  iservcfg dnsula
+
+Test "assign fd00::53 to interface"
+  ! [ -s "/var/lib/iserv/dns-ula/interface" ] ||
+  netquery6 -u 'ip nic' |
+      grep -q '^fd00::53 '"$(< /var/lib/iserv/dns-ula/interface)"'$'
+  ---
+  netquery6 -u 'ip nic' | grep '^fd00::53 ' | while read set
+  do
+    set_arr=($set)
+    ip addr del "${set_arr[0]}" dev "${set_arr[1]}"
+  done
+  ip addr add fd00::53 dev "$(< /var/lib/iserv/dns-ula/interface)"
+

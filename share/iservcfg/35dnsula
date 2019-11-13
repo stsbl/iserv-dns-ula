@@ -1,0 +1,128 @@
+#!/usr/bin/perl -CSDAL
+
+use warnings;
+use strict;
+use utf8;
+use IServ::Dialog qw(confirm inputbox menu msgbox);
+use List::MoreUtils qw(uniq);
+use Path::Tiny;
+
+my $TITLE = "DNS-Server-IP-Adresse";
+
+my $fn_interface = "/var/lib/iserv/dns-ula/interface";
+
+$IServ::Dialog::backtitle = "IServ-Konfiguration > $TITLE";
+
+sub system_v(@)
+{
+  print "@_\n";
+  system @_;
+}
+
+sub query_def_if()
+{
+  my $def_if = qx(/usr/lib/iserv/ipv6_defif);
+  chomp $def_if;
+
+  $def_if;
+}
+
+sub query_if()
+{
+  my $def_if = query_def_if;
+
+  #uniq split /\n/, qx(netquery6 nic);
+  grep !/^\Q$def_if\E$/, uniq split /\n/, qx(netquery6 nic);
+}
+
+sub read_if()
+{
+  return undef unless -s "$fn_interface";
+  my $path = path $fn_interface;
+
+  $path->slurp_utf8;
+}
+
+sub write_if($)
+{
+  my ($if) = @_;
+  my $path = path $fn_interface;
+
+  $path->spew_utf8($if);
+}
+
+sub format_if
+{
+  my ($if) = @_;
+  $if = $_ unless $if;
+  
+  return "Nicht gesetzt" unless $if;
+
+  my $append = "";
+
+  unless (grep /^\Q$if\E$/, split /\n/, qx(netquery6 nic))
+  {
+    $append = " (ungültig)";
+  }
+
+  "Schnittstelle " . $if . $append;
+}
+
+my $orig_if = my $if = read_if;
+my $sel;
+
+while (1)
+{
+  my @menu;
+  push @menu, "interface", format_if $if;
+  push @menu, "-" => "-";
+  push @menu, "save" => "Speichern und beenden" unless $orig_if eq $if;
+  push @menu, "exit" => "Beenden";
+
+  $sel = menu $TITLE, $sel, @menu;
+
+  if (not $sel or $sel eq "exit")
+  {
+    last;
+  }
+  elsif ($sel eq "save")
+  {
+    if ($if eq query_def_if)
+    {
+      msgbox "Auf " . format_if($if) . " liegt der Standard-Gateway des Servers.".
+          " Die Schnittstelle kann daher nicht benutzt werden.";
+ 
+      next;
+    }
+
+    write_if $if;
+    system_v "iservchk", "network";
+
+    last;
+  }
+  elsif ($sel eq "interface")
+  {
+    my $subsel;
+
+    while (1)
+    {
+      my @submenu;
+      push @submenu, $_ => format_if . " verwenden" for query_if;
+      push @submenu, "-" => "-";
+      push @submenu, "back" => "Zurück";
+
+      $subsel = menu "Schnittstellen", $subsel, @submenu;
+
+      if (not $subsel or $subsel eq "back")
+      {
+        last;
+      }
+      elsif (not $subsel eq "-")
+      {
+      	$if = $subsel;
+
+	last;
+      }
+    }
+  }
+}

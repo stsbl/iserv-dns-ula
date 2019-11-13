@@ -11,6 +11,8 @@ Architecture: all
 Depends: ${misc:Depends},
   ${perl:Depends},
   iserv-update,
+  libiserv-dialog-perl,
+  libpath-tiny-perl,
   stsbl-iserv-config-ipv6,
 Description: Lokale IPv6-AnyCast-DNS-Adresse für IServ
  Stellt die Unique-Local-Adresse fd00::53 zur Nutzung als Adresse für den DNS-
