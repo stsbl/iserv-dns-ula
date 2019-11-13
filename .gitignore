@@ -1,0 +1,6 @@
+debian/stsbl-iserv-dns-ula/*
+debian/stsbl-iserv-dns-ula.substvars
+debian/stsbl-iserv-dns-ula.debhelper.log
+debian/files
+debian/debhelper-build-stamp
+debian/*.debhelper
