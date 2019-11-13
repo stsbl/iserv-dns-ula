@@ -8,6 +8,7 @@ Standards-Version: 4.4.1
 
 Package: stsbl-iserv-dns-ula
 Architecture: all
+XB-Private-IServ-Revision: ${iserv:Revision}
 Depends: ${misc:Depends},
   ${perl:Depends},
   iserv-update,
