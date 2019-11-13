@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! netquery -6 ip | grep -q '^fd00::53$'
+if ! netquery6 ip | grep -q '^fd00::53$'
 then
   cat -
   exit 0
