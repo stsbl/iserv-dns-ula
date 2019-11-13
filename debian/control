@@ -13,6 +13,7 @@ Depends: ${misc:Depends},
   ${perl:Depends},
   iserv-update,
   libiserv-dialog-perl,
+  liblist-moreutils-perl,
   libpath-tiny-perl,
   stsbl-iserv-config-ipv6 (>= 19.11.13),
 Breaks:
