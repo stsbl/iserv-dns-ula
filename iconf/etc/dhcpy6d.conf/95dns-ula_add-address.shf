@@ -13,7 +13,7 @@ for IF in $(netquery6 -gu nic | sort | uniq)
 do
 [ "$IF" = "$DEFIF" ] && continue
 IN="$(echo "$IN" | sed -E '/^interface = '"$IF"'$/a \
-nameservers = fd00::53
+nameserver = fd00::53
 ' || cat -
 )"
 done
