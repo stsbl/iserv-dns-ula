@@ -1,3 +1,9 @@
+stsbl-iserv-dns-ula (20.03.10-1) stable; urgency=medium
+
+  * /etc/network/interfaces.d/ipv6-ula: Changed method to static (again)
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Tue, 10 Mar 2020 03:28:30 +0100
+
 stsbl-iserv-dns-ula (19.11.17-1) testing; urgency=medium
 
   * Fixed dhcpy6d nameserver
