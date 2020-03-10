@@ -16,7 +16,8 @@ fi
 
 cat <<EOT
 auto $IF
-iface $IF inet6 auto
+iface $IF inet6 static
 	address fd00::53/128
+	autoconf 1
 
 EOT
