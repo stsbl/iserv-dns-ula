@@ -1,3 +1,11 @@
+stsbl-iserv-dns-ula (20.08.06-1) stable; urgency=medium
+
+  * Iservcfg dnsula: Fixed usage of uninitalized value
+  * Iservchk: Fixed condition on interface selection for server with only
+    one default NIC
+
+ -- Felix Jacobi <Felix@jacobi-hamburg.net>  Thu, 06 Aug 2020 19:07:44 +0200
+
 stsbl-iserv-dns-ula (20.08.04-1) stable; urgency=medium
 
   * Updated license copyright
