@@ -76,7 +76,7 @@ while (1)
   my @menu;
   push @menu, "interface", format_if $if;
   push @menu, "-" => "-";
-  push @menu, "save" => "Speichern und beenden" unless $orig_if eq $if;
+  push @menu, "save" => "Speichern und beenden" unless ($orig_if // "") eq $if;
   push @menu, "exit" => "Beenden";
 
   $sel = menu $TITLE, $sel, @menu;
