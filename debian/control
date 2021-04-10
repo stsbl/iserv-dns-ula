@@ -2,23 +2,21 @@ Source: stsbl-iserv-dns-ula
 Section: misc
 Priority: optional
 Maintainer: Stadtteilschule Blankenese <repository@stsbl.de>
-Build-Depends: debhelper (>= 10)
-Build-Depends-Indep: iserv-buildtools
-Standards-Version: 4.4.1
+Build-Depends: debhelper-compat (= 13), dh-sequence-iserv, dh-sequence-stsbl
+Standards-Version: 4.5.0
 
 Package: stsbl-iserv-dns-ula
 Architecture: all
-XB-Private-IServ-Revision: ${iserv:Revision}
-Depends: ${misc:Depends},
-  ${perl:Depends},
-  iserv-update,
-  libiserv-dialog-perl,
-  liblist-moreutils-perl,
-  libpath-tiny-perl,
-  stsbl-iserv-config-ipv6 (>= 19.11.13),
-Breaks:
-  stsbl-iserv-ipv6-support (<< 19.11.15),
-  stsbl-iserv-server-radvd (<< 19.11.13),
+Xb-Private-Iserv-Revision: ${iserv:Revision}
+Depends: iserv-update,
+         libiserv-dialog-perl,
+         liblist-moreutils-perl,
+         libpath-tiny-perl,
+         stsbl-iserv-config-ipv6 (>= 19.11.13),
+         ${misc:Depends},
+         ${perl:Depends}
+Breaks: stsbl-iserv-ipv6-support (<< 19.11.15),
+        stsbl-iserv-server-radvd (<< 19.11.13)
 Description: Lokale IPv6-AnyCast-DNS-Adresse für IServ
  Stellt die Unique-Local-Adresse fd00::53 zur Nutzung als Adresse für den DNS-
  Server zur Verfügung.
