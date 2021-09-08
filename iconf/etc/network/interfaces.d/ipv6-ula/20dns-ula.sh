@@ -2,12 +2,12 @@
 
 FN_IF="/var/lib/iserv/dns-ula/interface"
 
-if ! [ -s "$FN_IF" ]
+if ! [ -s "$FN_IF" ] || ! netquery6 -qgul
 then
   exit 0
 fi
 
-IF="$(< "$FN_IF")" 
+IF="$(< "$FN_IF")"
 
 if ! netquery6 nic | grep -q '^'"$IF"'$'
 then
