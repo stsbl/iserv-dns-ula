@@ -14,7 +14,8 @@ do
   [ "$IF" = "$DEFIF" ] && continue
   IN="$(echo "$IN" | sed -E '/^interface '"$IF"' \{/a \
   RDNSS fd00::53 \{\
-    AdvRDNSSLifetime 10;\
+    # Android does not accept servers with a lifetime less than one hour
+    AdvRDNSSLifetime 3600;\
   \};\
 ' || cat -
 )"
