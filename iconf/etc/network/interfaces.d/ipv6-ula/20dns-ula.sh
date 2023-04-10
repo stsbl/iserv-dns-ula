@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 FN_IF="/var/lib/iserv/dns-ula/interface"
 
