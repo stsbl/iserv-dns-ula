@@ -1,0 +1,17 @@
+#!/bin/bash
+set -e
+. /usr/lib/iserv/ipv6chdetectd-functions
+# Interface choice belongs to initial provisioning, never an interactive hook.
+[ "$IPV6CHDETECTD_PHASE" = prepare ] || exit 0
+file=/var/lib/iserv/dns-ula/interface
+[ -s "$file" ] || exit 0
+nic=$(cat "$file")
+[[ "$nic" =~ ^[a-zA-Z0-9_.:-]+$ ]] || exit 1
+ip link show dev "$nic" >/dev/null 2>&1 || exit 0
+addresses=$(ipv6_query -u 'ip nic')
+if ipv6_has_addresses && ! printf '%s\n' "$addresses" | grep -Fqx "fd00::53 $nic"; then
+  while read -r address oldnic; do
+    [ "$address" != fd00::53 ] || ip -6 addr del fd00::53/128 dev "$oldnic"
+  done < <(printf '%s\n' "$addresses")
+  ip -6 addr add fd00::53/128 dev "$nic"
+fi

@@ -9,7 +9,7 @@ Homepage: https://it.stsbl.de/
 Package: stsbl-iserv-dns-ula
 Architecture: all
 Xb-Private-Iserv-Revision: ${iserv:Revision}
-Depends: iserv-update,
+Depends: ipv6chdetectd (>= 26.10.28.1), iserv-update,
          libiserv-dialog-perl,
          liblist-moreutils-perl,
          libpath-tiny-perl,
