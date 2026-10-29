@@ -16,7 +16,8 @@ Depends: ipv6chdetectd (>= 26.10.28.1), iserv-update,
          stsbl-iserv-config-ipv6 (>= 19.11.13),
          ${misc:Depends},
          ${perl:Depends}
-Breaks: stsbl-iserv-ipv6-support (<< 19.11.15),
+Breaks: radvd (<< 1:2.20),
+        stsbl-iserv-ipv6-support (<< 19.11.15),
         stsbl-iserv-server-radvd (<< 19.11.13)
 Description: Lokale IPv6-AnyCast-DNS-Adresse für IServ
  Stellt die Unique-Local-Adresse fd00::53 zur Nutzung als Adresse für den DNS-

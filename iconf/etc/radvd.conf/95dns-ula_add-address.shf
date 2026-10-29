@@ -7,12 +7,22 @@ then
 fi
 
 DEFIF="$(. /usr/lib/iserv/ipv6_defif)"
-IN="$(cat -)"
+# The DNS anycast address is not a network to advertise upstream.
+IN="$(awk -v default_if="$DEFIF" '
+  /^interface[[:space:]]/ { interface = $2 }
+  interface == default_if && /^[[:space:]]*route[[:space:]]+fd00::53(\/128)?[[:space:]]*\{/ { skip = 1 }
+  skip { if ($0 ~ /^[[:space:]]*};[[:space:]]*$/) skip = 0; next }
+  { print }
+')"
 
 for IF in $(netquery6 -gu nic | sort | uniq)
 do
   [ "$IF" = "$DEFIF" ] && continue
   IN="$(echo "$IN" | sed -E '/^interface '"$IF"' \{/a \
+  # Keep automatic prefixes, but never advertise the DNS anycast as a prefix\
+  autoignoreprefixes \{\
+    fd00::53/128;\
+  \};\
   RDNSS fd00::53 \{\
     # Android does not accept servers with a lifetime less than one hour\
     AdvRDNSSLifetime 3600;\
@@ -22,3 +32,4 @@ do
 done
 
 echo "$IN"
+
